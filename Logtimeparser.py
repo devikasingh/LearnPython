@@ -12,17 +12,17 @@ def convert_to_datetime(line):
        returns:
        datetime(2014, 7, 3, 23, 27, 51)'''
     fmt = '%Y-%m-%dT%H:%M:%S'
-    shutdown_event_timestamp.append(datetime.strptime(line.split(' ')[1],fmt))
-
+    return datetime.strptime(line.split(' ')[1],fmt)
+    
 def time_between_shutdowns(loglines):
     '''TODO 2:
        Extract shutdown events ("Shutdown initiated") from loglines and calculate the 
        timedelta between the first and last one. 
        Return this datetime.timedelta object.'''
-    for line in loglines:
-      if (line.find(SHUTDOWN_EVENT) != -1):
-        convert_to_datetime(line)
-    time_diff = shutdown_event_timestamp[-1] - shutdown_event_timestamp[0]
+
+    """List Comprehension example"""  
+    shutdown_event_timestamp = [convert_to_datetime(line) for line in loglines if (line.find(SHUTDOWN_EVENT) != -1) ]
+    time_diff = max(shutdown_event_timestamp) - min(shutdown_event_timestamp)
     print("Difference between first and last shutdown : %s seconds" % time_diff.seconds )
 
 
